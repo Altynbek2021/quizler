@@ -34,6 +34,24 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Widget> scorekeeper = [];
+  List<String> questions = [
+    "The black box in a plane is black", // false
+    "There are five different blood groups", // false
+    "The only letter not in the periodic table is the letter J", //true
+    "Thomas Edison discovered gravity", // false
+    "Venus is the hottest planet in the solar system" //true
+  ];
+
+  int currentIndex = 0;
+
+  String question() {
+    if (currentIndex < questions.length) {
+      return questions[currentIndex++];
+    } else {
+      currentIndex = 0; // Reset to start over if needed
+      return questions[currentIndex++];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,13 +59,13 @@ class _QuizPageState extends State<QuizPage> {
       padding: const EdgeInsets.only(bottom: 30),
       child: Column(
         children: [
-          const Expanded(
+          Expanded(
             flex: 5,
             child: Padding(
               padding: EdgeInsets.all(10.0),
               child: Center(
                   child: Text(
-                "Here will be the question",
+                question(),
                 style: TextStyle(
                   fontSize: 25,
                   color: Colors.white,
