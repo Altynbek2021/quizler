@@ -10,20 +10,93 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: Colors.black,
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-                child: Text(
-              "Here will be question",
-              style: TextStyle(color: Colors.white),
-            )),
-          ],
+        backgroundColor: Colors.grey,
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: QuizPage(),
+          ),
         ),
+      ),
+    );
+  }
+}
+
+class QuizPage extends StatefulWidget {
+  const QuizPage({super.key});
+
+  @override
+  State<QuizPage> createState() => _QuizPageState();
+}
+
+class _QuizPageState extends State<QuizPage> {
+  List<Widget> scorekeeper = [];
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 30),
+      child: Column(
+        children: [
+          const Expanded(
+            flex: 5,
+            child: Padding(
+              padding: EdgeInsets.all(10.0),
+              child: Center(
+                  child: Text(
+                "Here will be the question",
+                style: TextStyle(
+                  fontSize: 25,
+                  color: Colors.white,
+                ),
+              )),
+            ),
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      minimumSize: const Size(400, 100)),
+                  onPressed: () {
+                    setState(() {
+                      scorekeeper.add(const Icon(
+                        Icons.check,
+                        color: Colors.blueAccent,
+                        size: 30,
+                      ));
+                    });
+                  },
+                  child: const Text("True"),
+                ),
+              ),
+              Expanded(
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      minimumSize: const Size(400, 100)),
+                  onPressed: () {
+                    setState(() {
+                      scorekeeper.add(const Icon(
+                        Icons.close,
+                        color: Colors.red,
+                        size: 30,
+                      ));
+                    });
+                  },
+                  child: const Text("False"),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: scorekeeper,
+          ),
+        ],
       ),
     );
   }
