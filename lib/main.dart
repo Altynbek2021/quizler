@@ -39,6 +39,7 @@ class _QuizPageState extends State<QuizPage> {
   List<Widget> scorekeeper = [];
 
   int questionNumber = 0;
+  int counter = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +71,14 @@ class _QuizPageState extends State<QuizPage> {
                       minimumSize: const Size(400, 100)),
                   onPressed: () {
                     setState(() {
+                      bool correctAnswer =
+                          quizBrain.getguestionAnswer(questionNumber);
+                      if (correctAnswer == true) {
+                        counter++;
+                        print("User got it right");
+                      } else {
+                        print("User got it wrong");
+                      }
                       questionNumber++;
                       scorekeeper.add(const Icon(
                         Icons.check,
@@ -89,6 +98,14 @@ class _QuizPageState extends State<QuizPage> {
                       minimumSize: const Size(400, 100)),
                   onPressed: () {
                     setState(() {
+                      bool correctAnswer =
+                          quizBrain.getguestionAnswer(questionNumber);
+                      if (correctAnswer == false) {
+                        print("User got it right");
+                        counter++;
+                      } else {
+                        print("User got it wrong");
+                      }
                       questionNumber++;
                       scorekeeper.add(const Icon(
                         Icons.close,
@@ -105,6 +122,7 @@ class _QuizPageState extends State<QuizPage> {
           Row(
             children: scorekeeper,
           ),
+          Text("you got $counter corect answer")
         ],
       ),
     );
