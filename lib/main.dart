@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:quizler_app/quizbrain.dart';
+
+Quizbrain quizBrain = Quizbrain();
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -34,24 +37,8 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Widget> scorekeeper = [];
-  List<String> questions = [
-    "The black box in a plane is black", // false
-    "There are five different blood groups", // false
-    "The only letter not in the periodic table is the letter J", //true
-    "Thomas Edison discovered gravity", // false
-    "Venus is the hottest planet in the solar system" //true
-  ];
 
-  int currentIndex = 0;
-
-  String question() {
-    if (currentIndex < questions.length) {
-      return questions[currentIndex++];
-    } else {
-      currentIndex = 0; // Reset to start over if needed
-      return questions[currentIndex++];
-    }
-  }
+  int questionNumber = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +52,8 @@ class _QuizPageState extends State<QuizPage> {
               padding: EdgeInsets.all(10.0),
               child: Center(
                   child: Text(
-                question(),
-                style: TextStyle(
+                quizBrain.getquestionText(questionNumber),
+                style: const TextStyle(
                   fontSize: 25,
                   color: Colors.white,
                 ),
@@ -76,12 +63,14 @@ class _QuizPageState extends State<QuizPage> {
           Row(
             children: [
               Expanded(
+                /////////// True
                 child: TextButton(
                   style: TextButton.styleFrom(
                       backgroundColor: Colors.green,
                       minimumSize: const Size(400, 100)),
                   onPressed: () {
                     setState(() {
+                      questionNumber++;
                       scorekeeper.add(const Icon(
                         Icons.check,
                         color: Colors.blueAccent,
@@ -93,12 +82,14 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               Expanded(
+                //////////// False
                 child: TextButton(
                   style: TextButton.styleFrom(
                       backgroundColor: Colors.red,
                       minimumSize: const Size(400, 100)),
                   onPressed: () {
                     setState(() {
+                      questionNumber++;
                       scorekeeper.add(const Icon(
                         Icons.close,
                         color: Colors.red,
