@@ -13,13 +13,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Colors.grey,
         body: SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: QuizPage(),
           ),
         ),
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
 }
 
 class QuizPage extends StatefulWidget {
-  const QuizPage({super.key});
+  QuizPage({super.key});
 
   @override
   State<QuizPage> createState() => _QuizPageState();
@@ -37,8 +37,23 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Widget> scorekeeper = [];
+  void checkAnswer(bool userSelectedAns) {
+    bool correctAnswer = quizBrain.getguestionAnswer();
+    if (correctAnswer == userSelectedAns) {
+      scorekeeper.add(const Icon(
+        Icons.close,
+        color: Colors.red,
+        size: 30,
+      ));
+    } else {
+      scorekeeper.add(const Icon(
+        Icons.check,
+        color: Colors.blueAccent,
+        size: 30,
+      ));
+    }
+  }
 
-  int questionNumber = 0;
   int counter = 0;
 
   @override
@@ -53,7 +68,7 @@ class _QuizPageState extends State<QuizPage> {
               padding: EdgeInsets.all(10.0),
               child: Center(
                   child: Text(
-                quizBrain.getquestionText(questionNumber),
+                quizBrain.getquestionText(),
                 style: const TextStyle(
                   fontSize: 25,
                   color: Colors.white,
@@ -70,22 +85,7 @@ class _QuizPageState extends State<QuizPage> {
                       backgroundColor: Colors.green,
                       minimumSize: const Size(400, 100)),
                   onPressed: () {
-                    setState(() {
-                      bool correctAnswer =
-                          quizBrain.getguestionAnswer(questionNumber);
-                      if (correctAnswer == true) {
-                        counter++;
-                        print("User got it right");
-                      } else {
-                        print("User got it wrong");
-                      }
-                      questionNumber++;
-                      scorekeeper.add(const Icon(
-                        Icons.check,
-                        color: Colors.blueAccent,
-                        size: 30,
-                      ));
-                    });
+                    checkAnswer(true);
                   },
                   child: const Text("True"),
                 ),
@@ -97,22 +97,7 @@ class _QuizPageState extends State<QuizPage> {
                       backgroundColor: Colors.red,
                       minimumSize: const Size(400, 100)),
                   onPressed: () {
-                    setState(() {
-                      bool correctAnswer =
-                          quizBrain.getguestionAnswer(questionNumber);
-                      if (correctAnswer == false) {
-                        print("User got it right");
-                        counter++;
-                      } else {
-                        print("User got it wrong");
-                      }
-                      questionNumber++;
-                      scorekeeper.add(const Icon(
-                        Icons.close,
-                        color: Colors.red,
-                        size: 30,
-                      ));
-                    });
+                    checkAnswer(false);
                   },
                   child: const Text("False"),
                 ),
