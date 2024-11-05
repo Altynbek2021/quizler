@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:quizler_app/quizbrain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 Quizbrain quizBrain = Quizbrain();
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -37,21 +38,35 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Widget> scorekeeper = [];
+
   void checkAnswer(bool userSelectedAns) {
     bool correctAnswer = quizBrain.getguestionAnswer();
-    if (correctAnswer == userSelectedAns) {
-      scorekeeper.add(const Icon(
-        Icons.close,
-        color: Colors.red,
-        size: 30,
-      ));
-    } else {
-      scorekeeper.add(const Icon(
-        Icons.check,
-        color: Colors.blueAccent,
-        size: 30,
-      ));
-    }
+    setState(() {
+      if (quizBrain.isFinised() == true) {
+        Alert(
+                context: context,
+                title: "Finished",
+                desc: "You have reached end of the quiz")
+            .show();
+        quizBrain.reset();
+        scorekeeper = [];
+      } else {
+        if (correctAnswer == userSelectedAns) {
+          scorekeeper.add(const Icon(
+            Icons.close,
+            color: Colors.red,
+            size: 30,
+          ));
+        } else {
+          scorekeeper.add(const Icon(
+            Icons.check,
+            color: Colors.blueAccent,
+            size: 30,
+          ));
+        }
+      }
+      quizBrain.nextquestion();
+    });
   }
 
   int counter = 0;
@@ -104,8 +119,12 @@ class _QuizPageState extends State<QuizPage> {
               ),
             ],
           ),
-          Row(
-            children: scorekeeper,
+          SingleChildScrollView(
+            reverse: true,
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: scorekeeper,
+            ),
           ),
           Text("you got $counter corect answer")
         ],

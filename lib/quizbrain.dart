@@ -42,4 +42,16 @@ class Quizbrain {
   bool getguestionAnswer() {
     return _questionBank[_questionNumber].questionAnswer;
   }
+
+  bool isFinised() {
+    if (_questionNumber >= _questionBank.length - 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void reset() {
+    _questionNumber = 0;
+  }
 }
